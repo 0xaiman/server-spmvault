@@ -5,6 +5,8 @@ import createNewExamSet from './controller/examSet.controller/createNewExamSet.j
 import readExamSet from './controller/examSet.controller/readExamSet.js';
 import insertQuestionIntoExamSet from './controller/examSet.controller/insertQuestionsIntoExamSet.js';
 import registerUser from './controller/users.controller/createUser.js';
+import createToken from './controller/auth.js';
+import viewUserProfile from './controller/views/viewUserProfile.js';
 const app = express()
 const port = 3000
 
@@ -40,6 +42,12 @@ app.get('/product',(req,res)=>{
 
 // user registartion
 app.post('/register',registerUser);
+
+// user login
+app.post("/login",createToken);
+
+//todo read user info to render on user profile page
+app.get("/profile/:username",viewUserProfile);
 
 app.post('/create-new-exam-set',createNewExamSet);
 app.get('/read-exam-set/:exam_set_id',readExamSet);
