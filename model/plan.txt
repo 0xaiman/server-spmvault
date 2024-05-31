@@ -1,0 +1,127 @@
+Sure, we can rename the `Quizzes` table to `Examinations` and update the references accordingly. Here's the revised schema design:
+
+### Tables and Relationships
+
+1. **Users Table**:
+   - Stores information about the users who take the quizzes (now called examinations).
+
+2. **Examinations Table**:
+   - Stores metadata about each examination.
+
+3. **Questions Table**:
+   - Stores the questions for each examination.
+
+4. **Answers Table**:
+   - Stores the possible answers for each question.
+
+5. **User_Exam_Attempts Table**:
+   - Tracks user attempts on examinations.
+
+6. **User_Responses Table**:
+   - Stores the responses of users for each question in an examination attempt.
+
+7. **Figures Table** (Optional):
+   - Stores figures associated with questions.
+
+### Revised Schema Design
+
+#### 1. Users Table
+```sql
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 2. Examinations Table
+```sql
+CREATE TABLE Examinations (
+    examination_id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 3. Questions Table
+```sql
+CREATE TABLE Questions (
+    question_id SERIAL PRIMARY KEY,
+    examination_id INT REFERENCES Examinations(examination_id) ON DELETE CASCADE,
+    question_text TEXT NOT NULL,
+    figure_id INT REFERENCES Figures(figure_id) ON DELETE SET NULL, -- Optional if figures are used
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 4. Answers Table
+```sql
+CREATE TABLE Answers (
+    answer_id SERIAL PRIMARY KEY,
+    question_id INT REFERENCES Questions(question_id) ON DELETE CASCADE,
+    answer_text TEXT NOT NULL,
+    is_correct BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 5. User_Exam_Attempts Table
+```sql
+CREATE TABLE User_Exam_Attempts (
+    attempt_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES Users(user_id) ON DELETE CASCADE,
+    examination_id INT REFERENCES Examinations(examination_id) ON DELETE CASCADE,
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP
+);
+```
+
+#### 6. User_Responses Table
+```sql
+CREATE TABLE User_Responses (
+    response_id SERIAL PRIMARY KEY,
+    attempt_id INT REFERENCES User_Exam_Attempts(attempt_id) ON DELETE CASCADE,
+    question_id INT REFERENCES Questions(question_id) ON DELETE CASCADE,
+    answer_id INT REFERENCES Answers(answer_id) ON DELETE SET NULL,
+    responded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 7. Figures Table (Optional)
+```sql
+CREATE TABLE Figures (
+    figure_id SERIAL PRIMARY KEY,
+    figure_url TEXT NOT NULL,
+    description TEXT
+);
+```
+
+### Relationships and Integrity
+- **Users**: Each user can have multiple examination attempts.
+- **Examinations**: Each examination can have multiple questions.
+- **Questions**: Each question can have multiple answers and optionally a figure.
+- **Answers**: Each answer is linked to a question and indicates whether it is correct.
+- **User_Exam_Attempts**: Tracks each user's attempt on an examination.
+- **User_Responses**: Records the user's response to each question in an attempt.
+- **Figures** (Optional): Stores figures which can be associated with questions.
+
+### Additional Considerations
+1. **Indexes**: Create indexes on foreign keys and commonly queried fields for performance optimization.
+2. **Constraints**: Add constraints such as `UNIQUE`, `NOT NULL`, and foreign key constraints to ensure data integrity.
+3. **Timestamps**: Use timestamps to track creation and update times for audit purposes.
+
+### Example Indexes
+```sql
+CREATE INDEX idx_questions_examination_id ON Questions(examination_id);
+CREATE INDEX idx_answers_question_id ON Answers(question_id);
+CREATE INDEX idx_user_exam_attempts_user_id ON User_Exam_Attempts(user_id);
+CREATE INDEX idx_user_responses_attempt_id ON User_Responses(attempt_id);
+```
+
+This revised schema design reflects the change from quizzes to examinations, maintaining the structure and relationships needed for efficient data management and retrieval in your interactive quiz website.
