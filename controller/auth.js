@@ -32,15 +32,16 @@ async function createToken(req,res){
 
         const queryCheckUserExist = `SELECT * FROM users WHERE email = $1`
         const dbRes = await pool.query(queryCheckUserExist,[email])
-        const user = dbRes.rows[0]
+        const userData = dbRes.rows[0]
 
-        if(!user){
+        if(!userData){
             return res.status(401).json({
                 message:"User Not Found"
             });
         }
-        
-        const isValidPassword = bcrypt.compareSync(password,user.password_hash);
+
+        const username = userData.username        
+        const isValidPassword = bcrypt.compareSync(password,userData.password_hash);
         
         if(!isValidPassword){
             return res.status(401).json({
@@ -50,7 +51,8 @@ async function createToken(req,res){
         }
 
         const data ={
-            id:user.id
+            email,
+            username
         }
         const secretkey = "secretkey";
 

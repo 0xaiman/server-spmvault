@@ -8,9 +8,9 @@ WHERE username = $1
 
 async function viewUserProfile(req,res){
     try{
-        const username = req.params.username
+        const username = req.username
+        console.log("view req.username:",username);
 
-        console.log(username);
         if (!username) {
             return res.status(400).json({
               message: "Username parameter is required",

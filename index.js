@@ -7,6 +7,10 @@ import insertQuestionIntoExamSet from './controller/examSet.controller/insertQue
 import registerUser from './controller/users.controller/createUser.js';
 import createToken from './controller/auth.js';
 import viewUserProfile from './controller/views/viewUserProfile.js';
+import isAuth from './middleware/isAuth.js';
+import updateQuestionData from './controller/examSet.controller/updateQuestions.js';
+import uploadFile from './controller/media-file/uploadFile.js';
+import upload from './middleware/upload.js';
 const app = express()
 const port = 3000
 
@@ -29,17 +33,6 @@ app.get('/helloworld',(req,res)=>{
 });
 
 
-app.get('/product',(req,res)=>{
-  res.status(201).send(
-    [
-      {code:"001",item:"A",price:"20"},
-      {code:"002",item:"B",price:"120"},
-      {code:"003",item:"C",price:"210"},
-      {code:"004",item:"D",price:"200"}
-    ]
-  )
-})
-
 // user registartion
 app.post('/register',registerUser);
 
@@ -47,11 +40,16 @@ app.post('/register',registerUser);
 app.post("/login",createToken);
 
 //todo read user info to render on user profile page
-app.get("/profile/:username",viewUserProfile);
+app.get("/profile/:username",isAuth, viewUserProfile);
 
+//question management
 app.post('/create-new-exam-set',createNewExamSet);
 app.get('/read-exam-set/:exam_set_id',readExamSet);
-app.post('/enter-q3',insertQuestionIntoExamSet);
+app.post('/enter-q21',insertQuestionIntoExamSet);
+app.post('/update-question',updateQuestionData);
+
+//media files management
+app.post('/upload',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
 
 
 app.listen(port, () => {

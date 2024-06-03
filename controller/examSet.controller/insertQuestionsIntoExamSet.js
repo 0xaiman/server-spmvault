@@ -3,19 +3,22 @@ import { pool } from "../../database/connection.js";
 
 const query = `
    INSERT INTO questions(examination_id, question_text, chapter,form)
-   VALUES (1,'Apakah kepentingan Alat Regalia kepada Kesultanan Melayu Melaka?','1','5');
-
+   VALUES ($1,$2,$3,$4);
 `
 
 
 async function insertQuestionIntoExamSet(req,res){
         try{
-            const dbRes = await pool.query(query);
-            console.log(dbRes.rows)
+            const examination_id = req.body.examination_id;
+            const question_text = req.body.question_text;
+            const chapter = req.body.chapter;
+            const form = req.body.form;
+
+            await pool.query(query,[examination_id,question_text,chapter,form]);
             console.log("insertQuestionIntoExamSet OK");
             res.status(201).json({
                 message:`question inputted!`,
-                dbRes
+                question_text            
             })
     
     

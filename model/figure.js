@@ -4,8 +4,14 @@ import { pool } from "../database/connection.js";
 const query = `
     CREATE TABLE IF NOT EXISTS figures (
     figure_id SERIAL PRIMARY KEY,
-    figure_url TEXT NOT NULL,
-    description TEXT
+    field_name VARCHAR(255),
+    original_name VARCHAR(255),
+    encoding VARCHAR(255),
+    mimetype VARCHAR(255),
+    destination VARCHAR(255),
+    file_name VARCHAR(255),
+    path TEXT,
+    size INT
 );
 
 `
