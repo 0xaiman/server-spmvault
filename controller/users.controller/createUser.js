@@ -3,8 +3,8 @@ import { pool } from "../../database/connection.js";
 import bcrypt, { genSaltSync } from "bcrypt";
 
 const query = `
-    INSERT INTO users (username, password_hash, email,school_name, school_type,grade,age)
-    VALUES ($1,$2,$3,$4,$5,$6,$7);
+    INSERT INTO users (username, password_hash, email)
+    VALUES ($1,$2,$3);
 `
 
 async function registerUser(req,res){
@@ -12,15 +12,13 @@ async function registerUser(req,res){
         const username = req.body.username
         const password = req.body.password
         const email = req.body.email
-        const school = req.body.school
-        const school_type = req.body.school_type
-        const grade = req.body.grade
-        const age = req.body.age
+       
 
         // input validation: check if 
-        if(!username||!password||!email||!school||!school_type||!grade||!age){
+        if(!username||!password||!email){
             return res.status(401).json({
-                message:"Please ensure every info is filled in"
+                ok:false,
+                message:"Please ensure username, password and email input has been filled"
             })
         }
 
@@ -30,6 +28,7 @@ async function registerUser(req,res){
 
         if(!isValidEmail){
             return res.status(401).json({
+                ok:false,
                 message:"Invalid Email"
             });
         }
@@ -42,6 +41,7 @@ async function registerUser(req,res){
 
         if (userCount > 0) {
             return res.status(409).json({
+                ok:false,
                 message: "Username or Email already in use"
             });
         }
@@ -54,14 +54,15 @@ async function registerUser(req,res){
         const hashedPassword = bcrypt.hashSync(password,salt);
     
 
-        const dbRes = await pool.query(query, [username,hashedPassword,email,school, school_type,grade,age]);
-        console.log("registerUser OK");
+        const dbRes = await pool.query(query, [username,hashedPassword,email]);
+        // console.log("registerUser OK");
 
 
 
 
         res.status(201).json({
-            message:`User ${username} has been registered`
+            ok:true,
+            message:`User ${username} has been succesfully registered`
         })
 
     }catch(error){

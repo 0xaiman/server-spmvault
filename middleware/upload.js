@@ -1,29 +1,19 @@
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import multer from "multer";
+import path from "path"
+import crypto from "crypto"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Ensure 'uploads' directory exists
-const uploadDir = path.join(__dirname, '..', 'assets/2022/sejarah/klon_mrsx');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
+    destination : function(req,file,cb){
+        cb(null,"assets/question_media/sejarah/2022/3");
+
     },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname).toLowerCase();
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
-});
+    filename:function(req,file,cb){
+        const uuid = crypto.randomUUID();
+        cb(null,uuid + path.extname(file.originalname));
+    },
+})
 
-const upload = multer({ storage: storage });
+const upload = multer({storage:storage})
 
-export default upload;
+export default upload

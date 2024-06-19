@@ -14,6 +14,8 @@ async function createToken(req,res){
         // input validation: check if 
         if(!password||!email){
             return res.status(401).json({
+                ok:false,
+
                 message:"email and password is required"
             })
         }
@@ -24,6 +26,7 @@ async function createToken(req,res){
 
         if(!isValidEmail){
             return res.status(401).json({
+                ok:false,
                 message:"Invalid Email"
             });
         }
@@ -36,16 +39,20 @@ async function createToken(req,res){
 
         if(!userData){
             return res.status(401).json({
+                ok:false,
                 message:"User Not Found"
             });
         }
-
-        const username = userData.username        
+        console.log(userData)
+        const id = userData.id;        
+        const username = userData.username  
+        const lastLogin = userData.last_login      
         const isValidPassword = bcrypt.compareSync(password,userData.password_hash);
         
         if(!isValidPassword){
             return res.status(401).json({
-                message:"Unauthorized"
+                ok:false,
+                message:"Invalid Password"
             });
 
         }
@@ -63,9 +70,13 @@ async function createToken(req,res){
         await pool.query(updateLastLoginQuery, [email]);
 
         res.status(200).json({
-            message:"token created",
+            ok:true,
+            message:"Login Success",
+            id,
+            lastLogin,
+            email,
+            username,
             token
-
         });
 
     }catch(error){

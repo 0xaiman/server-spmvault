@@ -4,12 +4,14 @@ import { pool } from "../database/connection.js";
 const query = `
     CREATE TABLE IF NOT EXISTS exam_sets (
     examination_id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL UNIQUE,
+    title VARCHAR(100) NOT NULL ,
     subject TEXT,
     description TEXT,
     year INT NOT NULL,
+    img_path TEXT ,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    answerList TEXT[]
 );
 
 `

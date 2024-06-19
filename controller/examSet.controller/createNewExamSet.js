@@ -2,10 +2,10 @@
 import { pool } from "../../database/connection.js";
 
 const query = `
-   INSERT INTO exam_sets(title,description,year,subject)
-   VALUES ('klon percubaan spm mrsx','kertas 1','2022','sejarah');
-
+   INSERT INTO exam_sets(title,description,year,subject,img_path)
+   VALUES ('klon_selangor','kertas 1','2022','matematik','/subject-thumbnail/matematik.png');
 `
+
 
 
 async function createNewExamSet(req,res){
@@ -15,7 +15,7 @@ async function createNewExamSet(req,res){
             console.log("createNewExamSet OK");
             res.status(201).json({
                 message:`examset created!`,
-                dbRes
+                
             })
     
     

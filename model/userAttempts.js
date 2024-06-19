@@ -4,10 +4,12 @@ import { pool } from "../database/connection.js";
 const query = `
         CREATE TABLE IF NOT EXISTS user_exam_attempts (
             attempt_id SERIAL PRIMARY KEY,
-            user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+            user_id INT REFERENCES users(id) ON DELETE CASCADE,
+            username VARCHAR(50),
+            subject VARCHAR(50),
             examination_id INT REFERENCES exam_sets(examination_id) ON DELETE CASCADE,
-            started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            completed_at TIMESTAMP
+            time_taken TEXT,
+            score NUMERIC(4,1)
 );
 
 `

@@ -2,22 +2,21 @@
 import { pool } from "../../database/connection.js";
 
 const query = `
-   SELECT * FROM exam_sets
-   WHERE examination_id= $1
-   
+   SELECT title,subject,year,examination_id, img_path FROM exam_sets
+   ORDER BY 2
+      
 `
 
 
-async function readExamSet(req,res){
+async function readAllExamSet(req,res){
         try{
-            const exam_set_id = req.params.exam_set_id
+            // const exam_set_id = req.params.exam_set_id
 
-            const dbRes = await pool.query(query,[exam_set_id]);
+            const dbRes = await pool.query(query);
             const data = dbRes.rows
-            console.log(dbRes.rows)
-            console.log("readExamSet OK");
+           
             res.status(201).json({
-                message:`examset created!`,
+                message:`examset read!`,
                 data
             })
     
@@ -32,5 +31,5 @@ async function readExamSet(req,res){
         }
     }
     
-    export default readExamSet;
+    export default readAllExamSet;
 

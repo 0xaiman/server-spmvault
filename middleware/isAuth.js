@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 function isAuth(req,res,next){
     const bearerToken = req.headers.authorization;
     const token = bearerToken.split(" ")[1]
-    console.log(bearerToken.split(" ")[1])
+    // console.log(bearerToken.split(" ")[1])
     if(!token){
         return res.status(400).json({
             message: "Unauthorized"
@@ -15,7 +15,7 @@ function isAuth(req,res,next){
 
     try{
         const decoded  = jwt.verify(token, secretkey);
-        console.log(decoded.username)
+        // console.log(decoded.username)
         req.email = decoded.email;
         req.username = decoded.username;
 

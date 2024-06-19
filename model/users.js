@@ -8,10 +8,6 @@ const query = `
         username VARCHAR(255) UNIQUE NOT NULL,
         password_hash VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        school_name VARCHAR(255),
-        school_type VARCHAR(50) CHECK (school_type IN ('primary', 'secondary')),
-        grade VARCHAR(50),
-        age INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         last_login TIMESTAMP
 );
