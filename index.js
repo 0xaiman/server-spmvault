@@ -16,7 +16,7 @@ import readAllExamSet from './controller/examSet.controller/readAllExamSet.js';
 import fetchQuestions from './controller/examSet.controller/fetchQuestions.js';
 import submitAttemptResult from './controller/users.controller/user.attempts/userAnswerCheck.js';
 const app = express()
-const port = process.env.PORT || 3002;
+const port = 3000
 
 //important middleware
 app.use(express.json());
