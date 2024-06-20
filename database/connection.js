@@ -18,6 +18,9 @@ export const pool = new Pool({
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
     port: process.env.PGPORT,
+    ssl: {
+        rejectUnauthorized: false, // Allow self-signed certificates from Render PostgreSQL
+      },
   
   });
 
