@@ -5,15 +5,18 @@ import createQuestionTable from '../model/questions.js';
 import createFigureTable from '../model/figure.js';
 import createAnswerTable from '../model/answer.js';
 import createUserAttemptTable from '../model/userAttempts.js';
+import "dotenv/config"
+
 
 const { Pool } = pkg;
 
 
+
 export const pool = new Pool({
-  host: 'localhost',
-  user: 'postgres',
-  password: 'password',
-  database:'spmvaultdb',
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database:process.env.PGDATABASE,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
