@@ -56,20 +56,26 @@ app.post("/fetch-attempt-result/:examination_id",submitAttemptResult)
 app.get("/profile/:username",isAuth, viewUserProfile); //didnt implement yet
 
 //question management
-app.post('/create-new-exam-set',createNewExamSet);
+// app.post('/create-new-exam-set',createNewExamSet);
 app.get('/read-exam-set',readAllExamSet);
 app.get('/fetch-questions/:subject/:year/:exam_id',isAuth,fetchQuestions);
-app.post('/enter-q21',insertQuestionIntoExamSet);
-app.post('/update-question',updateQuestionData);
+// app.post('/enter-q21',insertQuestionIntoExamSet);
+// app.post('/update-question',updateQuestionData);
 
 //media files management
 //upload
-app.post('/uploads',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
+// app.post('/uploads',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
 // app.post('/assets/question-media/:subject/:year/:examination_id',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
 //serve
 app.use('/serve/assets', express.static(path.join(__dirname, 'assets')));
 //serve images
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Handle client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
+
 
 
 app.listen(port, () => {
