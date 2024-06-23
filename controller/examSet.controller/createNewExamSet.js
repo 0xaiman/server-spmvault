@@ -3,7 +3,7 @@ import { pool } from "../../database/connection.js";
 
 const query = `
    INSERT INTO exam_sets(title,description,year,subject,img_path)
-   VALUES ('klon_selangor','kertas 1','2022','matematik','/subject-thumbnail/matematik.png');
+   VALUES ('klon_selangor','kertas 1','2022','kimia','/subject-thumbnail/kimia.png');
 `
 
 
@@ -15,7 +15,6 @@ async function createNewExamSet(req,res){
             console.log("createNewExamSet OK");
             res.status(201).json({
                 message:`examset created!`,
-                
             })
     
     
@@ -23,9 +22,7 @@ async function createNewExamSet(req,res){
             console.error("error createNewExamSet :",error);
             res.status(500).json({
                 message:`500: examset creation fails!`
-            })
-           
-    
+            })    
         }
     }
     

@@ -15,6 +15,10 @@ import upload from './middleware/upload.js';
 import readAllExamSet from './controller/examSet.controller/readAllExamSet.js';
 import fetchQuestions from './controller/examSet.controller/fetchQuestions.js';
 import submitAttemptResult from './controller/users.controller/user.attempts/userAnswerCheck.js';
+import dashboardProfileMath from './controller/users.controller/user.attempts/dashboardProfileMath.js';
+import connectionFirebase from './database/connectionFirebase.js';
+import { uploadFirebase } from './middleware/uploadFirebase.js';
+import uploadFileFirebase from './controller/media-file.controller/uploadFIleFirebase.js';
 const app = express()
 const port = 3000
 
@@ -28,8 +32,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-
+// initialize Database connection
 dbInit();
+
+// initialize firebase connection
+connectionFirebase();
 
 app.get('/home',(req,res)=>{
     res.type('text/html');
@@ -42,38 +49,38 @@ app.get('/helloworld',(req,res)=>{
 
 });
 
-
+// User VIEW : : Client request
 // user registartion
 app.post('/register',registerUser);
-
 // user login
 app.post("/login",createToken);
-//userAttempt fetchanswerlist
+//userAttempt fetchResult 
 app.post("/fetch-attempt-result/:examination_id",submitAttemptResult) 
-
-
-//todo read user info to render on user profile page
+//user profile : Client request
 app.get("/profile/:username",isAuth, viewUserProfile); //didnt implement yet
+app.get("/dashboard/:username",dashboardProfileMath)
 
-//question management
-// app.post('/create-new-exam-set',createNewExamSet);
+
+// //question VIEW: Client request
 app.get('/read-exam-set',readAllExamSet);
 app.get('/fetch-questions/:subject/:year/:exam_id',isAuth,fetchQuestions);
-// app.post('/enter-q21',insertQuestionIntoExamSet);
-// app.post('/update-question',updateQuestionData);
 
-//media files management
+// question management: admin request
+app.post('/create-new-exam-set',createNewExamSet);
+app.post('/:questions_subject/enter-q1',insertQuestionIntoExamSet);
+app.post('/update-question',updateQuestionData);
+
+//media files management :admin request
+// upload :FIrebase
+app.post('/upload-firebase',uploadFirebase.single("biologi-2022-8"),uploadFileFirebase)
+
 //upload
-// app.post('/uploads',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
-// app.post('/assets/question-media/:subject/:year/:examination_id',upload.single("question-image-sejarah-2022-mrsx"),uploadFile);
-//serve
+app.post('/uploads',upload.single(""),uploadFile);
+// serve
 app.use('/serve/assets', express.static(path.join(__dirname, 'assets')));
 //serve images
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-
-
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Server running on port ${port}`)
 })

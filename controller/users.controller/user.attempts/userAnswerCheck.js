@@ -1,9 +1,6 @@
 import { pool } from "../../../database/connection.js";
 
-// TODO: DIDNt finished, continue later on
-// this one is for fetching answerList
-//theplan is to compare with user answer
-//then generate marks
+
 
 const query2 = `
     SELECT answer_list, subject, title

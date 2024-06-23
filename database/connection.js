@@ -3,9 +3,9 @@ import createUserTable from '../model/users.js';
 import createExamSetTable from '../model/examSets.js';
 import createQuestionTable from '../model/questions.js';
 import createFigureTable from '../model/figure.js';
-import createAnswerTable from '../model/answer.js';
 import createUserAttemptTable from '../model/userAttempts.js';
 import "dotenv/config"
+import createFirebaseFigureTable from '../model/firebaseFigure.js';
 
 
 const { Pool } = pkg;
@@ -18,9 +18,6 @@ export const pool = new Pool({
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
     port: process.env.PGPORT,
-    ssl: {
-        rejectUnauthorized: false, // Allow self-signed certificates from Render PostgreSQL
-      },
   
   });
 
@@ -32,8 +29,8 @@ async function dbInit(){
         createUserTable();
         createExamSetTable();
         createFigureTable();
+        createFirebaseFigureTable();
         createQuestionTable();
-        createAnswerTable();
         createUserAttemptTable();
 
     }catch(error){

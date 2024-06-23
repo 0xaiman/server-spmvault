@@ -1,3 +1,5 @@
 node_modules/
 uploads
 .env
+database/firestore_key/firebase_key.json
+

@@ -25,10 +25,11 @@ async function fetchQuestions(req,res){
                 })
             }
 
+            
             const queryCallQuestionData = `
                 SELECT question_id, question_text, f.path, multi_choice,answer_options
                 FROM questions_${subject} q_s
-                LEFT JOIN figures f ON
+                LEFT JOIN firebase_figure f ON 
                 q_s.figure_id = f.figure_id
                 WHERE examination_id = $1
                 ORDER BY question_id asc;

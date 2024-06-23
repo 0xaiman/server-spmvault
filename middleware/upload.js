@@ -5,7 +5,7 @@ import crypto from "crypto"
 
 const storage = multer.diskStorage({
     destination : function(req,file,cb){
-        cb(null,"assets/question_media/sejarah/2022/3");
+        cb(null,"assets/subject-thumbnail");
 
     },
     filename:function(req,file,cb){
