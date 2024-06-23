@@ -1,3 +1,5 @@
+// DEPRECATED : NOW USING uploadFIleFirebase.js
+
 import { pool } from "../../database/connection.js"
 const query = `
     INSERT into figures(field_name,original_name,encoding,mimetype,destination,file_name,path,size)

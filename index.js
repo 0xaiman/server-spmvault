@@ -18,7 +18,7 @@ import submitAttemptResult from './controller/users.controller/user.attempts/use
 import dashboardProfileMath from './controller/users.controller/user.attempts/dashboardProfileMath.js';
 import connectionFirebase from './database/connectionFirebase.js';
 import { uploadFirebase } from './middleware/uploadFirebase.js';
-import uploadFileFirebase from './controller/media-file.controller/uploadFIleFirebase.js';
+import uploadFileFirebase from './controller/media-file.controller/uploadFileFirebase.js';
 const app = express()
 const port = 3000
 

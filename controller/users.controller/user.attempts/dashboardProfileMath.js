@@ -43,7 +43,15 @@ import { pool } from "../../../database/connection.js";
                     subject;
             `
         const response = await pool.query(queryGetAttemptData,[userId,username]);
-        console.log(response.rows);
+        // console.log(response.rows);
+        // "getting subject name from response:
+        console.log("getting subject name from response:",response.rows[0].subject);
+        // storing those subject in single array
+        let arraySubject = []
+        for(let i=0;i<response.rows.length;i++){
+            arraySubject[i] = response.rows[i].subject
+        }
+        // console.log("arraySUbject", arraySubject)
         const dashboardData = response.rows
 
         function extractData(subjectName){
@@ -57,32 +65,38 @@ import { pool } from "../../../database/connection.js";
         const moralData = extractData("pendidikan_moral") || {};
         const matematikData = extractData("matematik") || {};
 
-        //generating list for number of attempts
-        let numberOfAttemptList = []
-        const dataAttemptList = [bmData["number_of_attempts"],biData["number_of_attempts"],sejarahData["number_of_attempts"],paiData["number_of_attempts"],moralData["number_of_attempts"],matematikData["number_of_attempts"]]
+        console.log(dashboardData);
+        // console.log("test boolean:",dashboardData[0].subject === "fizik");
+        // console.log("test boolean:",dashboardData[0].subject === arraySubject[0]);
 
-        for(let i = 0 ; i<dataAttemptList.length; i++){
-            if(dataAttemptList[i]=== undefined){
-                numberOfAttemptList[i] =0
-            }else{
-            numberOfAttemptList[i] = dataAttemptList[i]
+        let numberOfAttemptList = []
+
+        // store numberOfAttempts in single array to fit reactapexcharts format
+        // loop for : If the data gathered from SQL equates to subject arrays, 
+        // store the number of attaempts in numberOfAttempts array
+        for(let i = 0; i<arraySubject.length;i++){
+            if(dashboardData[i].subject === arraySubject[i]){
+                numberOfAttemptList[i] = dashboardData[i].number_of_attempts
             }
+
         }
 
         //generating list for avg score
         let avgScoreList = [];
-        const dataAvgScoreList = [bmData["average_score"],biData["average_score"],sejarahData["average_score"],paiData["average_score"],moralData["average_score"],matematikData["average_score"]]
 
-        for(let i = 0 ; i<dataAvgScoreList.length; i++){
-            if(dataAvgScoreList[i]=== undefined){
-                avgScoreList[i] =0
-            }else{
-                avgScoreList[i] = dataAvgScoreList[i]
+        // store avgScore in single array to fit reactapexcharts format
+         // store the number of attaempts in numberOfAttempts array
+         for(let i = 0; i<arraySubject.length;i++){
+            if(dashboardData[i].subject === arraySubject[i]){
+                avgScoreList[i] = dashboardData[i].average_score
             }
+
         }
+     
 
         res.status(200).json({
             message:`fetching dashboard for ${username}`,
+            arraySubject,
             numberOfAttemptList,
             avgScoreList
                   
