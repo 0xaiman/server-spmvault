@@ -45,7 +45,7 @@ import { pool } from "../../../database/connection.js";
         const response = await pool.query(queryGetAttemptData,[userId,username]);
         // console.log(response.rows);
         // "getting subject name from response:
-        console.log("getting subject name from response:",response.rows[0].subject);
+        // console.log("getting subject name from response:",response.rows[0]);
         // storing those subject in single array
         let arraySubject = []
         for(let i=0;i<response.rows.length;i++){
@@ -57,17 +57,6 @@ import { pool } from "../../../database/connection.js";
         function extractData(subjectName){
             return dashboardData.find((data)=>(data.subject === subjectName));
         }
-
-        const bmData = extractData("bahasa_malaysia") || {};
-        const biData = extractData("bahasa_inggeris") || {};
-        const sejarahData = extractData("sejarah") || {};
-        const paiData = extractData("pendidikan_islam") || {};
-        const moralData = extractData("pendidikan_moral") || {};
-        const matematikData = extractData("matematik") || {};
-
-        console.log(dashboardData);
-        // console.log("test boolean:",dashboardData[0].subject === "fizik");
-        // console.log("test boolean:",dashboardData[0].subject === arraySubject[0]);
 
         let numberOfAttemptList = []
 

@@ -19,6 +19,7 @@ import dashboardProfileMath from './controller/users.controller/user.attempts/da
 import connectionFirebase from './database/connectionFirebase.js';
 import { uploadFirebase } from './middleware/uploadFirebase.js';
 import uploadFileFirebase from './controller/media-file.controller/uploadFileFirebase.js';
+import uploadProfilePicture from './controller/media-file.controller/uploadProfilePicture.js';
 const app = express()
 const port = 3000
 
@@ -75,7 +76,7 @@ app.post('/update-question',updateQuestionData);
 app.post('/upload-firebase',uploadFirebase.single("biologi-2022-8"),uploadFileFirebase)
 
 //upload
-app.post('/uploads',upload.single(""),uploadFile);
+app.post('/upload-profile-pic',upload.single("profile"),uploadProfilePicture);
 // serve
 app.use('/serve/assets', express.static(path.join(__dirname, 'assets')));
 //serve images

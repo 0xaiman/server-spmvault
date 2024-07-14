@@ -43,7 +43,7 @@ async function createToken(req,res){
                 message:"User Not Found"
             });
         }
-        console.log(userData)
+        // console.log(userData)
         const id = userData.id;        
         const username = userData.username  
         const lastLogin = userData.last_login      
@@ -69,14 +69,39 @@ async function createToken(req,res){
         const updateLastLoginQuery = `UPDATE users SET last_login = NOW() WHERE email = $1`;
         await pool.query(updateLastLoginQuery, [email]);
 
+        const queryGetProfilePic = `
+            SELECT username,destination,file_name 
+            FROM profile_picture
+            WHERE username = $1
+            order by figure_id desc
+            limit 1;  `
+        const responseProfilePic = await pool.query(queryGetProfilePic,[username]);
+        // console.log(responseProfilePic.rows[0])
+
+        // console.log( `${responseProfilePic.rows[0].destination}/${responseProfilePic.rows[0].file_name}`)
+
+
+        let path
+        if( responseProfilePic.rows.length === 0){
+             path = 'assets/profile-picture/default.jpg';
+
+        }else{
+              path = `${responseProfilePic.rows[0].destination}/${responseProfilePic.rows[0].file_name}`;
+        }
+
+        // Normalize to use forward slashes
+
+
         res.status(200).json({
+            
             ok:true,
             message:"Login Success",
             id,
             lastLogin,
             email,
             username,
-            token
+            token,
+            profilePicturePath:path,
         });
 
     }catch(error){

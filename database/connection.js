@@ -6,6 +6,7 @@ import createFigureTable from '../model/figure.js';
 import createUserAttemptTable from '../model/userAttempts.js';
 import "dotenv/config"
 import createFirebaseFigureTable from '../model/firebaseFigure.js';
+import createProfilePicture from '../model/profilePicture.js';
 
 
 const { Pool } = pkg;
@@ -35,6 +36,7 @@ async function dbInit(){
         createFirebaseFigureTable();
         createQuestionTable();
         createUserAttemptTable();
+        createProfilePicture();
 
     }catch(error){
         console.log(`Database Connection Failed`);
