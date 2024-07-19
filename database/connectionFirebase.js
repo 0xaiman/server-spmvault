@@ -18,12 +18,14 @@ import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const serviceAccountPath = path.resolve(__dirname, './firestore_key/firebase_key.json');
+// const serviceAccountPath = path.resolve(__dirname, './firestore_key/firebase_key.json');
+
 
 async function connectionFirebase(){
     try{
 
-        const serviceAccount = JSON.parse(readFileSync(serviceAccountPath,'utf-8'));
+        // const serviceAccount = JSON.parse(readFileSync(serviceAccountPath,'utf-8'));
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)
         // Initialize Firebase Admin SDK
         admin.initializeApp({
             credential : admin.credential.cert(serviceAccount),
@@ -32,7 +34,7 @@ async function connectionFirebase(){
             storageBucket :`fir-uploadspmvault.appspot.com`
         });
         
-        
+        console.log("FIREBASE SERVICE ACCOUNT KEY OK")
         console.log(`CONNECTION TO FIREBASE DOMAIN OK`)
 
     }catch(error){
